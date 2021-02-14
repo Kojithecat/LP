@@ -1,0 +1,58 @@
+insert :: [Int] -> Int -> [Int]
+
+insert [] x = [x]
+insert (x:xs) y 
+  |   y <= x = [y]++([x]++xs)
+  |   y > x = [x] ++ (insert xs y) 
+
+
+isort :: [Int] -> [Int]
+
+isort [] = []
+isort (x:xs) = insert (isort xs) x 
+
+remove :: [Int] -> Int -> [Int]
+remove (x:xs) y
+  | y == x = xs
+  |otherwise = [x]++remove xs y 
+
+ssort :: [Int] -> [Int]
+ssort [] = []
+ssort (x:[]) = [x]
+ssort (x:xs)
+  | x > minimum xs = [minimum xs]++ssort (remove (x:xs) (minimum xs))
+  | otherwise = [x]++ssort(xs) 
+
+merge :: [Integer] -> [Integer] -> [Integer]
+merge [] [] = []
+merge [] xs = xs
+merge xs [] = xs
+
+merge (x:xs) (y:ys)
+  | x <= y = [x]++ merge xs (y:ys)
+  | otherwise = [y]++ merge ys (x:xs)
+
+msort :: [Int] -> [Int]
+msort [] = []
+msort (x:[]) = [x]
+msort xs = 
+ merge (msort (take (div (length xs) 2) xs)) (msort (drop (div (length xs) 2) xs)) 
+
+
+petitgran [] _ = ([],[])
+petitgran (x:xs) p
+  | x <= p = ([x]++fst pog,snd pog)
+  | otherwise = (fst pog, [x]++snd pog)
+  where pog = petitgran xs p
+
+
+qsort :: [Int] -> [Int]
+qsort [] = []
+
+qsort (x:xs) = qsort (fst (petitgran xs x))  ++[x] ++ qsort(snd (petitgran xs x))
+
+genQsort :: Ord a => [a] -> [a]
+
+genQsort [] = []
+genQsort (x:[]) = [x]
+genQsort (x:xs) = genQsort (fst (petitgran xs x))  ++[x] ++ genQsort(snd (petitgran xs x))

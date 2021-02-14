@@ -1,0 +1,36 @@
+absValue :: Int -> Int
+absValue n 
+  | n >= 0 = n
+  | otherwise = -n
+
+power :: Int -> Int -> Int 
+power _ 0 = 1
+power x p = x*power (x) (p-1)
+
+divide_rec :: Int -> Int -> Bool
+divide_rec _ 1 = True
+divide_rec a b = mod a b /= 0  && divide_rec a (b-1)
+
+isPrime :: Int -> Bool
+isPrime 1 = False
+isPrime n = divide_rec n (n-1)
+
+slowFib :: Int -> Int
+slowFib 0 = 0
+slowFib 1 = 1
+slowFib n = slowFib(n-1) + slowFib (n-2)
+
+
+quickFib :: Int -> Int
+quickFib 0 = 0
+quickFib 1 = 1
+quickFib n
+    | even n = ( (2 * qfhn_1) + qfhn ) * qfhn
+    | odd n = qfhn1 * qfhn1 + qfhn1_1 * qfhn1_1
+    where
+        halfn = div n 2
+        halfn1 = div (n+1) 2
+        qfhn = quickFib(halfn)
+        qfhn_1 = quickFib(halfn-1)
+        qfhn1 = quickFib(halfn1)
+        qfhn1_1 = quickFib(halfn1-1)

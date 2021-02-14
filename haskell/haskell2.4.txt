@@ -1,0 +1,24 @@
+countIf :: (Int -> Bool) -> [Int] -> Int
+
+countIf f xs = length $ filter f xs 
+
+pam :: [Int] -> [Int -> Int] -> [[Int]] 
+
+pam xs fs = zipWith (\x -> \f -> map f x  ) (repeat xs) fs
+
+pam2 :: [Int] -> [Int -> Int] -> [[Int]] 
+
+pam2 xs fs = map (\x -> (map ($x) fs)) xs
+
+
+filterFoldl :: (Int -> Bool) -> (Int -> Int -> Int) -> Int -> [Int] -> Int 
+
+filterFoldl f g e el = foldl g  e (filter f el)
+
+insert :: (Int -> Int -> Bool) -> [Int] -> Int -> [Int]
+
+insert k l e = takeWhile (not.k e) l ++ [e] ++ dropWhile (not.k e) l
+
+insertionSort :: (Int -> Int -> Bool) -> [Int] -> [Int]
+
+insertionSort f xs = foldl (insert f ) [] xs  

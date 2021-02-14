@@ -1,0 +1,24 @@
+data Queue a = Queue [a] [a]
+     deriving (Show)
+          
+create :: Queue a
+create = (Queue [] [])
+
+push :: a -> Queue a -> Queue a
+push a (Queue le ld ) = (Queue le (a:ld))
+
+pop :: Queue a -> Queue a
+pop (Queue (l:ls) ld ) = (Queue ls ld ) 
+pop (Queue [] l ) = (Queue lrevtail [])
+  where lrevtail = tail $ reverse l 
+
+top :: Queue a -> a
+top (Queue [] l) = last l 
+top (Queue l _) = head l 
+empty :: Queue a -> Bool
+empty (Queue [] []) = True
+empty (Queue _ _ ) = False
+
+instance Eq a => Eq (Queue a)
+  where 
+    (Queue l1 l2) == (Queue lc1 lc2) = l1++(reverse l2)  == lc1++(reverse lc2)  

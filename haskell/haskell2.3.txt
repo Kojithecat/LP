@@ -1,0 +1,46 @@
+myFoldl :: (a->b->a) -> a -> [b] -> a
+myFoldl f n [] = n
+myFoldl f n (x:[]) = f n x
+myFoldl f n (x:xs) = myFoldl f (f n x) xs
+
+myFoldr :: (a->b->b) -> b-> [a] -> b
+myFoldr f n [] = n
+myFoldr f n (x:xs) = f  x   (myFoldr f n xs)
+
+myIterate :: (a->a) -> a -> [a]
+myIterate f a = [a]++(myIterate f (f a)) 
+
+myUntil :: (a -> Bool) -> (a->a) -> a -> a
+myUntil f g n 
+  |f(n) = n
+  |otherwise = myUntil f g (g(n))
+
+myMap :: (a->b) -> [a]  -> [b]
+
+myMap f x = zipWith (\x' _ -> (f x')) x (repeat 0)
+
+filt :: (a -> Bool) -> a -> [a]
+filt f a = if f a then [a] else []    
+
+flatten :: [[a]] -> [a]
+flatten [] = []
+flatten (x:xs) = x++flatten(xs)  
+
+myFilter :: (a -> Bool) -> [a] -> [a]
+myFilter f xs  =flatten $ zipWith  (\x y -> filt f x) xs xs
+
+myAll :: (a->Bool) -> [a] -> Bool
+myAll f [] = True
+myAll f x = null $ dropWhile f x
+
+myAny :: (a->Bool) -> [a] -> Bool
+myAny f x =  not $ null $ filter f x
+
+myZip :: [a]->[b]->[(a,b)]
+myZip [] _ = []
+myZip _ [] = []
+myZip (x:xs) (y:ys) = (x,y):(myZip xs ys)
+
+myZipWith :: (a->b->c)-> [a]->[b]->[c]
+
+myZipWith f xs ys =  map (\x -> f (fst x) (snd x)) (myZip xs ys)

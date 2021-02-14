@@ -1,0 +1,8 @@
+saluda :: String -> String
+saluda s
+  | (last s == 'a') || (last s == 'A') = "Hola maca!" 
+  | otherwise = "Hola maco!"
+
+main = do
+s <- getLine
+putStrLn $ saluda s

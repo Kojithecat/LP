@@ -1,0 +1,9 @@
+fizzBuzz :: [Either Int String]
+
+fizzBuzz = checkl[0..]
+  where 
+  checkl (n:ns)
+    | mod n 3 == 0 && mod n 5 == 0 = [Right "FizzBuzz"]++(checkl ns)
+    | mod n 3 == 0 = [Right "Fizz"]++(checkl ns) 
+    | mod n 5 == 0 = [Right "Buzz"]++(checkl ns)
+    | otherwise = [Left n]++(checkl ns)    

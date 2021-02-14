@@ -1,0 +1,15 @@
+flatten :: [[Int]] -> [Int]
+flatten xs = foldl (++) [] xs 
+
+myLength  :: String -> Int
+myLength  str = foldl (+) 0 $ (map (const 1) str)
+
+myReverse :: [Int] -> [Int]
+myReverse xs = foldr (\x -> \y -> y++[x]) [] xs 
+
+countIn :: [[Int]] -> Int -> [Int]
+countIn xs n = map (\x -> length (filter (== n) x)) xs
+
+
+firstWord :: String -> String 
+firstWord s = takeWhile (/=' ') $ dropWhile (==' ') s

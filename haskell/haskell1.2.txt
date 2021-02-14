@@ -1,0 +1,63 @@
+myLength :: [Int] -> Int 
+myLength [] = 0
+myLength (x:xs) = 1 + myLength xs 
+
+myMaximum :: [Int] -> Int 
+myMaximum (x:[]) = x
+myMaximum (x:xs) = max x (myMaximum(xs))
+
+average :: [Int] -> Float
+average (x:[]) = fromIntegral x
+average (x:xs) = (fromIntegral x + (average xs *fromIntegral(myLength xs))) /fromIntegral((myLength xs)+1)
+
+rev :: [Int] -> [Int]
+rev [a] = [a]
+rev (x:xs) = rev(xs) ++[x]
+
+buildPalindrome :: [Int] -> [Int]
+buildPalindrome [] = []
+buildPalindrome xs =  rev(xs)++xs 
+
+remove :: [Int] -> [Int] -> [Int]
+remove a [] = a
+remove [] b = [] 
+remove (x:xs) (y:ys) 
+  | x /= y = (remove [x] ys) ++ (remove xs (y:ys)) 
+  | x == y  = remove xs (y:ys)
+
+flatten :: [[Int]] -> [Int]
+flatten [] = []
+flatten (x:xs) = x++flatten(xs)    
+
+oddsNevens :: [Int] -> ([Int],[Int])
+
+oddsNevens ([]) = ([],[])
+oddsNevens (x:xs) 
+  | odd x = ([x]++ fst ods1even2, snd ods1even2)
+  | even x = (fst ods1even2, [x]++ snd ods1even2)
+  where ods1even2 = oddsNevens(xs) 
+
+divide_rec :: Int -> Int -> Bool
+divide_rec _ 1 = True
+divide_rec a b = mod a b /= 0  && divide_rec a (b-1)
+
+isPrime :: Int -> Bool
+isPrime 1 = False
+isPrime n = divide_rec n (n-1)
+
+primeList :: Int -> [Int]
+primeList 1 = []
+primeList x
+  | isPrime  x = x:primeList (x-1)
+  | otherwise = primeList(x-1)
+
+primeDiv :: Int -> [Int] -> [Int]
+
+primeDiv x [] = []
+primeDiv x xs 
+  | mod x (head xs) == 0 = [head xs]++((primeDiv x) (tail xs))
+  | otherwise = (primeDiv x) (tail xs) 
+
+primeDivisors :: Int -> [Int]
+primeDivisors 1 = [] 
+primeDivisors x = rev (primeDiv x (primeList x))

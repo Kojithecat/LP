@@ -1,0 +1,66 @@
+ones :: [Integer]
+ones = repeat 1
+
+nats :: [Integer]
+nats = [0..]
+
+flatten :: [[Integer]] -> [Integer]
+flatten [] = []
+flatten (x:xs) = x++flatten(xs)   
+
+ints :: [Integer]
+ints = 0:(flatten(zipWith (\x y -> [x]++[(-y)]) [x| x<-[1..]] [y| y<-[1..]]))
+
+triangulars :: [Integer]
+triangulars = scanl (+) 0 [1..]
+
+
+factorials :: [Integer]
+factorials = scanl (*) 1 [1..] 
+
+fibs :: [Integer]
+fibs = 0:1:zipWith (+) fibs (tail fibs)
+
+primes :: [Integer]
+primes = garbell [2..]
+  where garbell (p:xs) = p: garbell [x| x<- xs, mod x p /= 0]
+
+
+merge :: [Integer]-> [Integer]-> [Integer]
+merge [] [] = []
+merge [] xs = xs
+merge xs [] = xs
+merge (x:xs) (y:ys)
+  | x < y = [x]++ merge xs (y:ys)
+  | x == y = [x]++ merge xs (ys) 
+  | otherwise = [y]++ merge ys (x:xs)
+
+hammings :: [Integer]
+
+hammings = 1 : merge3 (map(*2) hammings) (map(*3) hammings) (map(*5) hammings)
+  where merge3 xs ys zs = merge xs (merge ys zs)
+
+tartmid :: [Integer] -> [Integer]
+tartmid [] = []
+tartmid [x] = []
+tartmid l = [e] ++ l'
+      where e = head l + (head $ drop 1 l)
+            l' = tartmid $ drop 1 l    
+
+tartones :: [Integer] -> [Integer]
+tartones l  = [1] ++ (tartmid l) ++ [1]
+
+tartaglia :: [[Integer]]
+tartaglia = iterate tartones [1]
+
+lookNsay :: [Integer]
+lookNsay = iterate construct 1
+  where
+    construct :: Integer -> Integer 
+    construct n = read $ say $ show n
+      where 
+        say :: String -> String
+        say [] = []
+        say sx = show (length $ takeWhile (==s) sx) ++ [s] ++ (say $ dropWhile (==s) sx)
+          where 
+            s = head sx
